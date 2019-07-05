@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Welcome To My Sentence Book!</h1>
+{% if user.is_authenticated %}
+<a href="{% url 'sentences:index' %}">Let's use it!</a>
+{% else %}
+<p>Please login or signup.</p>
+{% endif %}
+{% endblock %}

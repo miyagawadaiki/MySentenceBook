@@ -3,6 +3,10 @@ from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views import generic
+
+
+class TopView(generic.TemplateView):
+    template_name = 'accounts/top.html'
  
  
 class SignUpView(generic.CreateView):
