@@ -30,9 +30,6 @@ try:
 except ImportError:
     pass
 
-if not DEBUG:
-    import django_heroku
-    django_heroku.settings(locals())
 
 ALLOWED_HOSTS = []
 
@@ -134,3 +131,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # './static'
 
 # Login
 LOGIN_REDIRECT_URL = '/'
+
+if not DEBUG:
+    import django_heroku
+    django_heroku.settings(locals())
