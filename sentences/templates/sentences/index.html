@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Index{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<h1>Username</h1>
+<p class="user-name">{{ user }}</p>
+{% endif %}
+
+<h1>Sentences</h1>
+<section class="object-list">
+    <ul>
+        {% for sentence in sentence_list %}
+        <li>
+            <h2><a class="overFlow" href="{% url 'sentences:detail' sentence.pk %}">{{ sentence.sentence_text }}</a></h2>
+        </li>
+        {% empty %}
+        <li class="no-object">
+            <p>No sentences yet.</p>
+        {% endfor %}
+    </ul>
+</section>
+
+{% if is_paginated %}
+<section class="pagination">
+    <ul>
+        <li>
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}">&lt;&lt; Prev</a>
+            {% else %}
+            &lt;&lt; Prev
+            {% endif %}
+        </li>
+        <li>
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">Next &gt;&gt;</a>
+            {% else %}
+            Next &gt;&gt;
+            {% endif %}
+        </li>
+    </ul>
+</section>
+{% endif %}
+
+<p><a class="act" href="{% url 'sentences:create' %}">Add New Sentence</a></p>
+<p><a class="act" href="{% url 'sentences:cate_index' %}">Category List</a></p>
+<p><a class="act" href="{% url 'sentences:tag_index' %}">Tag List</a></p>
+
+{% endblock %}

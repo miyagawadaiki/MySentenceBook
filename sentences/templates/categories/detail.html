@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign up{% endblock %}
+
+{% block content %}
+<h1>{{ category.name }}</h1>
+<section class="sentence-text">
+	{% if category.description %}
+	<p>{{ category.description }}</p>
+	{% endif %}
+</section>
+<section class="sentence-date">
+    <p>Created:&nbsp;{{ category.created_date }}</p>
+</section>
+{# ownership #}
+{% if request.user.id == object.author_id %}
+<section class="sentence-edit">
+    <a class="act" href="{% url 'sentences:cate_update' category.pk %}">Edit</a>
+    <a class="act" href="{% url 'sentences:cate_delete' category.pk %}">Delete</a>
+</section>
+{% endif %}
+<section>
+    <p><a href="javascript:history.back()">&lt; Back</a></p>
+</section>
+{% endblock %}

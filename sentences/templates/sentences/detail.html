@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign up{% endblock %}
+
+{% block content %}
+<h1>{{ sentence.sentence_text }}</h1>
+<section class="sentence-text">
+	<p>{{ sentence.comment_text|linebreaksbr }}</p>
+	{% if sentence.category %}
+	<p>{{ sentence.category.name }}</p>
+	{% else %}
+	<p>No category</p>
+	{% endif %}
+    <p style="text-align: right">Author: {{ sentence.author }}</p>
+</section>
+<section class="sentence-date">
+    <p>Created:&nbsp;{{ sentence.created_date }}<span>/</span>Updated:&nbsp;{{ sentence.updated_date }}</p>
+</section>
+{# ownership #}
+{% if request.user.id == object.author_id %}
+<section class="sentence-edit">
+    <a class="act" href="{% url 'sentences:update' sentence.pk %}">Edit</a>
+    <a class="act" href="{% url 'sentences:delete' sentence.pk %}">Delete</a>
+</section>
+{% endif %}
+<section>
+    <p><a href="javascript:history.back()">&lt; Back</a></p>
+</section>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign up{% endblock %}
+
+{% block content %}
+<h1>{{ tag.name }}</h1>
+<section class="sentence-date">
+    <p>Used:&nbsp;{{ tag.used_date }}</p>
+</section>
+{# ownership #}
+{% if request.user.id == object.author_id %}
+<section class="sentence-edit">
+    <a class="act" href="{% url 'sentences:tag_update' tag.pk %}">Edit</a>
+    <a class="act" href="{% url 'sentences:tag_delete' tag.pk %}">Delete</a>
+</section>
+{% endif %}
+<section>
+    <p><a href="javascript:history.back()">&lt; Back</a></p>
+</section>
+{% endblock %}
