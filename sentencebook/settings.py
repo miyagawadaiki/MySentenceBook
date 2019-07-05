@@ -130,7 +130,9 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # './static'
 
 
 # Login
-LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/'
+#LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = 'sentences:index'
 
 if not DEBUG:
     import django_heroku
