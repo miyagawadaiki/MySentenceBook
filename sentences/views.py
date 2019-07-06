@@ -8,6 +8,7 @@ from django.utils import timezone
 from django.views import generic
 
 from .models import Category, Sentence, Tag
+from .form import SentenceSearchForm
 
 
 ##############################################
@@ -19,9 +20,75 @@ class IndexView(generic.ListView):
     paginate_by = 5
     context_object_name = 'sentence_list'
 
+    def post(self, request, *args, **kwargs):
+        form_value = [
+            self.request.POST.get('sentence_text', None),
+            self.request.POST.get('category', None),
+            self.request.POST.getlist('tag', None), # get as list
+        ]
+        request.session['form_value'] = form_value
+        # 検索時にページネーションに関連したエラーを防ぐ
+        self.request.GET = self.request.GET.copy()
+        self.request.GET.clear()
+        return self.get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # sessionに値がある場合、その値をセットする。（ページングしてもform値が変わらないように）
+        sentence_text = ''
+        category = None
+        tag = None
+        if 'form_value' in self.request.session:
+            form_value = self.request.session['form_value']
+            sentence_text = form_value[0]
+            category = form_value[1]
+            tag = form_value[2]
+        default_data = {'sentence_text': sentence_text,   # 検索ワード
+                        'category': category,   # カテゴリー
+                        'tag': tag,   # タグ
+                        }
+        test_form = SentenceSearchForm(initial=default_data) # 検索フォーム
+        context['test_form'] = test_form
+        return context
+
     def get_queryset(self):
-        return Sentence.objects.filter(author=self.request.user).order_by('-updated_date')[:50]
+        #return Sentence.objects.filter(author=self.request.user).order_by('-updated_date')[:50]
         #return Sentence.objects.all().order_by('-updated_date')
+
+        # sessionに値がある場合、その値でクエリ発行する。
+        if 'form_value' in self.request.session:
+            form_value = self.request.session['form_value']
+            sentence_text = form_value[0]
+            category = form_value[1]
+            print(category)
+            tag = form_value[2]
+            print(tag)
+
+            # 検索条件
+            condition_author = Q(author=self.request.user)
+            condition_text = Q()
+            condition_cate = Q()
+            condition_tags = Q()
+            if len(sentence_text) != 0 and sentence_text[0]:
+                condition_text = Q(sentence_text__contains=sentence_text)
+            else:
+                condition_text = Q(sentence_text__contains=' ')
+            if category != None and category != '':
+                condition_cate = Q(category__pk=category)
+                
+            q = Sentence.objects.select_related().filter(
+                        condition_author &
+                        condition_text & 
+                        condition_cate 
+            )
+            if len(tag) != 0:
+                for tid in tag:
+                    q = q.filter(tag__pk=int(tid))
+            return q
+        else:
+            # 何も返さない
+            return Sentence.objects.filter(author=self.request.user).order_by('-updated_date')[:50]
+            #return Post.objects.none()
 
 
 class DetailView(generic.DetailView):

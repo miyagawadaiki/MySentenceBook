@@ -76,6 +76,7 @@ class Sentence(models.Model):
         'Category',
         on_delete=models.SET_NULL,
         null=True,
+        blank=True,
     )
     tag = models.ManyToManyField(
         'Tag',

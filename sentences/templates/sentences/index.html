@@ -2,6 +2,7 @@
 
 {% block title %}Index{% endblock %}
 
+
 {% block content %}
 
 {% if user.is_authenticated %}
@@ -10,6 +11,24 @@
 {% endif %}
 
 <h1>Sentences</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+		<div>
+		<table>
+			<tr>
+			{% for field in test_form %}
+				<td>
+					<label>{{ field.label }}:</label>
+					{{ field }}
+				</td> 
+			{% endfor %}
+			</tr>
+		</table>
+		</div>
+        <input type="submit" id="button" name="button" value="Search">
+    </form>
+
 <section class="object-list">
     <ul>
         {% for sentence in sentence_list %}
