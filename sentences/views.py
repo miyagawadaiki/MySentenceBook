@@ -82,7 +82,7 @@ class IndexView(generic.ListView):
                         condition_text & 
                         condition_cate 
             )
-            if len(tag) != 0:
+            if len(tag) != 0 and tag[0] != 'All':
                 for tid in tag:
                     q = q.filter(tag__pk=int(tid))
             return q

@@ -45,6 +45,8 @@ class SentenceSearchForm(ModelForm):
                 Q(is_public=True)
             ),
         )
+        self.fields['tag'].choices = \
+            [('All', 'All')] + list(self.fields['tag'].choices)
 
     class Meta:
         model = Sentence
