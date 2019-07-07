@@ -88,6 +88,12 @@ class Sentence(models.Model):
     def __str__(self):
         return self.sentence_text
 
+    def tag_names(self):
+        ret = ''
+        for t in Tag.objects.filter(author=self.author):
+            ret += t.name + ', '
+        return ret[:-2]
+
     def get_absolute_url(self):
         # https://docs.djangoproject.com/en/2.0/ref/class-based-views/generic-editing/
         # return reverse('blogs:detail', kwargs={'pk': self.pk})
