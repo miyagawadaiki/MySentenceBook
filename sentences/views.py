@@ -47,7 +47,8 @@ class IndexView(generic.ListView):
                         'category': category,   # カテゴリー
                         'tag': tag,   # タグ
                         }
-        test_form = SentenceSearchForm(initial=default_data) # 検索フォーム
+        test_form = SentenceSearchForm(self.request.user, initial=default_data) # 検索フォーム
+        # test_form = SentenceSearchForm(initial=default_data) # 検索フォーム
         context['test_form'] = test_form
         return context
 
@@ -86,9 +87,7 @@ class IndexView(generic.ListView):
                     q = q.filter(tag__pk=int(tid))
             return q
         else:
-            # 何も返さない
             return Sentence.objects.filter(author=self.request.user).order_by('-updated_date')[:50]
-            #return Post.objects.none()
 
 
 class DetailView(generic.DetailView):

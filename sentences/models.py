@@ -45,6 +45,7 @@ class Tag(models.Model):
         on_delete=models.CASCADE, 
         null=True,
     )
+    is_public = models.BooleanField('Go Publish', default = False)
 
     def __str__(self):
         return self.name
@@ -80,7 +81,7 @@ class Sentence(models.Model):
     )
     tag = models.ManyToManyField(
         'Tag',
-        default=None,
+        #default=None,
         blank=True,
     )
 
