@@ -8,7 +8,7 @@ from django.utils import timezone
 from django.views import generic
 
 from .models import Category, Sentence, Tag
-from .form import SentenceSearchForm
+from .form import SentenceForm, SentenceSearchForm
 
 
 ##############################################
@@ -82,10 +82,10 @@ class IndexView(generic.ListView):
                         condition_text & 
                         condition_cate 
             )
-            if len(tag) != 0:
+            if len(tag) != 0 and tag[0] != 'All':
                 for tid in tag:
                     q = q.filter(tag__pk=int(tid))
-            return q
+            return q.order_by('-updated_date')
         else:
             return Sentence.objects.filter(author=self.request.user).order_by('-updated_date')[:50]
 
@@ -108,11 +108,34 @@ class CreateView(LoginRequiredMixin, generic.edit.CreateView):
     fields = ['sentence_text', 'comment_text', 'category', 'tag']  # '__all__'
     #context_object_name = 'sentence'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        sentence_text = ''
+        comment_text = 'No commenet.'
+        category = None
+        tag = None
+        default_data = {'sentence_text': sentence_text,   # 検索ワード
+                        'comment_text': comment_text,     # コメント
+                        'category': category,   # カテゴリー
+                        'tag': tag,   # タグ
+                        }
+        test_form = SentenceForm(self.request.user, initial=default_data)
+        context['form'] = test_form
+        return context
+
     def form_valid(self, form):
         # This method is called when valid form data has been POSTed.
         # It should return an HttpResponse.
         # https://docs.djangoproject.com/en/2.0/topics/class-based-views/generic-editing/#models-and-request-user
         form.instance.author = self.request.user
+        print(form.instance)
+        return super(CreateView, self).form_valid(form)
+
+    def form_invalid(self, form):
+        print("error")
+        #print(form.instance)
+        print("category:", form.instance.category)
+        print("tag:", form.instance.tag)
         return super(CreateView, self).form_valid(form)
 
 
@@ -121,6 +144,22 @@ class UpdateView(LoginRequiredMixin, generic.edit.UpdateView):  # The LoginRequi
     template_name = 'sentences/form.html'
     fields = ['sentence_text', 'comment_text', 'category', 'tag']  # '__all__'
     #context_object_name = 'sentence'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        sentence_text = self.get_object().sentence_text
+        comment_text = self.get_object().comment_text
+        category = self.get_object().category
+        #print(self.object.tag)
+        tag = [self.get_object().tag]
+        default_data = {'sentence_text': sentence_text,   # 検索ワード
+                        'comment_text': comment_text,     # コメント
+                        'category': category,   # カテゴリー
+                        'tag': tag,   # タグ
+                        }
+        test_form = SentenceForm(self.request.user, initial=default_data)
+        context['form'] = test_form
+        return context
 
     def dispatch(self, request, *args, **kwargs):
         # ownership validation

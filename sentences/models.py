@@ -82,6 +82,7 @@ class Sentence(models.Model):
     tag = models.ManyToManyField(
         'Tag',
         #default=None,
+        #default=Tag.objects.get_or_create(defaults=dict(name='None',is_public=True,))[0],
         blank=True,
     )
 
