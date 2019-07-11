@@ -11,7 +11,7 @@
 {% endif %}
 
 <h1>Sentences</h1>
-
+<section class="common-form">
     <form method="POST">
         {% csrf_token %}
 		<div>
@@ -26,8 +26,12 @@
 			</tr>
 		</table>
 		</div>
-        <input type="submit" id="button" name="button" value="Search">
+		<!--
+        <input type="submit" class="submit" id="button" name="button" value="Search">
+		-->
+        <button type="submit" class="submit" name="button">Search</button>
     </form>
+</section>
 
 <section class="object-list">
     <ul>
