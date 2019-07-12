@@ -82,11 +82,18 @@ class Sentence(models.Model):
     tag = models.ManyToManyField(
         'Tag',
         #default=None,
+        #default=Tag.objects.get_or_create(defaults=dict(name='None',is_public=True,))[0],
         blank=True,
     )
 
     def __str__(self):
         return self.sentence_text
+
+    def tag_names(self):
+        ret = ''
+        for t in Tag.objects.filter(author=self.author):
+            ret += t.name + ', '
+        return ret[:-2]
 
     def get_absolute_url(self):
         # https://docs.djangoproject.com/en/2.0/ref/class-based-views/generic-editing/

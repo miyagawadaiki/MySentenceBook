@@ -3,34 +3,26 @@ from django import forms
 from django.db import models
 from django.db.models import Q
 from django.forms import ModelForm, SelectMultiple, CheckboxSelectMultiple
-from django.utils.translation import gettext_lazy as _
+#from django.utils.translation import gettext_lazy as _
 from .models import Category, Tag, Sentence
 
 
-class SentenceSearchForm(ModelForm):
-    """
-    sentence_text = forms.CharField(
-        label='Words',
-        max_length=50,
-        required=False,
-    )
-    tag = forms.ModelMultipleChoiceField(
-        label='Tags',
-        required=False,
-        queryset=Tag.objects,
-        #widget=SelectMultiple(attrs={'id="multiSelect"'})
-    )
-    """
+class SentenceForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
-        super(SentenceSearchForm, self).__init__(*args, **kwargs)
+        super(SentenceForm, self).__init__(*args, **kwargs)
         self.fields['sentence_text'] = forms.CharField(
-            label='Words',
-            max_length=30,
+            label='Sentence',
+            max_length=300,
+            required=True
+        )
+        self.fields['comment_text'] = forms.CharField(
+            label='Comments',
+            max_length=200,
             required=False,
         )
         self.fields['category'] = forms.ModelChoiceField(
-            label='Tags',
+            label='Category',
             required=False,
             queryset=Category.objects.filter(
                 Q(author=user) |
@@ -45,6 +37,43 @@ class SentenceSearchForm(ModelForm):
                 Q(is_public=True)
             ),
         )
+        #self.fields['tag'].choices = \
+        #    [(None, 'None')] + list(self.fields['tag'].choices)
+
+
+    class Meta:
+        model = Sentence
+        fields = ['sentence_text', 'comment_text', 'category', 'tag']
+
+
+
+class SentenceSearchForm(ModelForm):
+
+    def __init__(self, user, *args, **kwargs):
+        super(SentenceSearchForm, self).__init__(*args, **kwargs)
+        self.fields['sentence_text'] = forms.CharField(
+            label='Words',
+            max_length=30,
+            required=False,
+        )
+        self.fields['category'] = forms.ModelChoiceField(
+            label='Category',
+            required=False,
+            queryset=Category.objects.filter(
+                Q(author=user) |
+                Q(is_public=True)
+            ),
+        )
+        self.fields['tag'] = forms.ModelMultipleChoiceField(
+            label='Tags',
+            required=False,
+            queryset=Tag.objects.filter(
+                Q(author=user) |
+                Q(is_public=True)
+            ),
+        )
+        self.fields['tag'].choices = \
+            [('All', 'All')] + list(self.fields['tag'].choices)
 
     class Meta:
         model = Sentence

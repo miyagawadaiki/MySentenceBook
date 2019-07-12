@@ -9,7 +9,7 @@
 <p class="user-name">{{ user }}</p>
 {% endif %}
 
-<h1>Category</h1>
+<h1>Tag</h1>
 <section class="object-list">
     <ul>
         {% for tag in tag_list %}
@@ -18,7 +18,7 @@
         </li>
         {% empty %}
         <li class="no-object">
-            <p>No category yet.</p>
+            <p>No tag yet.</p>
         {% endfor %}
     </ul>
 </section>
