@@ -7,10 +7,11 @@
 <section class="sentence-text">
 	<p>{{ sentence.comment_text|linebreaksbr }}</p>
 	{% if sentence.category %}
-	<p>{{ sentence.category.name }}</p>
+	<p>Category: {{ sentence.category.name }}</p>
 	{% else %}
 	<p>No category</p>
 	{% endif %}
+	<p>Tags: {{ tagnames }}</p>
     <p style="text-align: right">Author: {{ sentence.author }}</p>
 </section>
 <section class="sentence-date">

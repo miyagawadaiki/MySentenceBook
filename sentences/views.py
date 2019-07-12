@@ -95,6 +95,14 @@ class DetailView(generic.DetailView):
     template_name = 'sentences/detail.html'
     context_object_name = 'sentence'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        #context['tagname_list'] = [tag.name for tag in self.get_object.tag.all()]
+        context['tagnames'] = self.object.tag_names()
+        if context['tagnames'] == '':
+            context['tagnames'] = 'None'
+        return context
+
     """
     def get_queryset(self):
         Excludes any questions that aren't published yet. 
