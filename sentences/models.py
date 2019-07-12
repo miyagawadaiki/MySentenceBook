@@ -91,7 +91,8 @@ class Sentence(models.Model):
 
     def tag_names(self):
         ret = ''
-        for t in Tag.objects.filter(author=self.author):
+        #for t in Tag.objects.filter(author=self.author):
+        for t in self.tag.all():
             ret += t.name + ', '
         return ret[:-2]
 
