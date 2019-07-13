@@ -14,7 +14,7 @@ class SentenceForm(ModelForm):
         self.fields['sentence_text'] = forms.CharField(
             label='Sentence',
             max_length=300,
-            required=True
+            required=True,
         )
         self.fields['comment_text'] = forms.CharField(
             label='Comments',
@@ -39,6 +39,9 @@ class SentenceForm(ModelForm):
         )
         #self.fields['tag'].choices = \
         #    [(None, 'None')] + list(self.fields['tag'].choices)
+
+        self.fields['sentence_text'].widget.attrs["class"] = "input"
+        self.fields['comment_text'].widget.attrs["class"] = "input"
 
 
     class Meta:
@@ -74,6 +77,8 @@ class SentenceSearchForm(ModelForm):
         )
         self.fields['tag'].choices = \
              list(self.fields['tag'].choices) + [('None', 'None')]
+
+        self.fields['sentence_text'].widget.attrs["class"] = "input"
 
     class Meta:
         model = Sentence

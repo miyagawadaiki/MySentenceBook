@@ -179,18 +179,23 @@ header .site-name a {
     margin-bottom: 8px;
 }
 
+.common-form .input, .common-form .textarea {
+    padding: 4px;
+    width: 100%;
+    margin-bottom: 8px;
+}
+/*
 .common-form input, .common-form textarea {
     padding: 4px;
     width: 100%;
     margin-bottom: 8px;
 }
+*/
 
-/*
 .common-form select {
     padding: 4px;
     margin-bottom: 8px;
 }
-*/
 
 .common-form .submit {
     margin-top: 8px;
