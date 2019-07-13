@@ -36,6 +36,7 @@ class SentenceForm(ModelForm):
                 Q(author=user) |
                 Q(is_public=True)
             ),
+            #initial=tag_initial,
         )
         #self.fields['tag'].choices = \
         #    [(None, 'None')] + list(self.fields['tag'].choices)
