@@ -73,7 +73,7 @@ class SentenceSearchForm(ModelForm):
             ),
         )
         self.fields['tag'].choices = \
-            [('All', 'All')] + list(self.fields['tag'].choices)
+             list(self.fields['tag'].choices) + [('None', 'None')]
 
     class Meta:
         model = Sentence
