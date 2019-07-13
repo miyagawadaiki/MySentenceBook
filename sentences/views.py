@@ -162,7 +162,9 @@ class UpdateView(LoginRequiredMixin, generic.edit.UpdateView):  # The LoginRequi
         comment_text = self.get_object().comment_text
         category = self.get_object().category
         #print(self.object.tag)
-        tag = [self.get_object().tag]
+        #tag = [self.get_object().tag]
+        tag = self.get_object().tag.values_list('id', flat=True)
+        print(tag)
         default_data = {'sentence_text': sentence_text,   # 検索ワード
                         'comment_text': comment_text,     # コメント
                         'category': category,   # カテゴリー
