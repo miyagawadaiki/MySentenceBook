@@ -82,9 +82,12 @@ class IndexView(generic.ListView):
                         condition_text & 
                         condition_cate 
             )
-            if len(tag) != 0 and tag[0] != 'All':
+            if len(tag) != 0:# and tag[0] != 'All':
                 for tid in tag:
-                    q = q.filter(tag__pk=int(tid))
+                    if tid != 'None':
+                        q = q.filter(tag__pk=int(tid))
+                    else:
+                        q = q.filter(tag=None)
             return q.order_by('-updated_date')
         else:
             return Sentence.objects.filter(author=self.request.user).order_by('-updated_date')[:50]

@@ -7,6 +7,20 @@
 <h1>{{ object|yesno:'Edit,Add New'}} Sentence</h1>
 <section class="common-form">
     <form action="" method="post">{% csrf_token %}
+		<style>
+		select {
+		  width: 200px;
+		}
+		</style>
+		<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+		<script src="https://unpkg.com/multiple-select@1.3.1/dist/multiple-select.min.js"></script>
+		<script>
+			$(function() {
+				$('#id_tag').multipleSelect({
+					selectAll: false
+				})
+			})
+		</script>
         {{ form.as_p }}
         <button type="submit" class="submit">{{ object|yesno:'Update,Save'}}</button>
     </form>

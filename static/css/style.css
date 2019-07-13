@@ -4,7 +4,7 @@ html, body {
     font-family: 'Open Sans', sans-serif;
 }
 
-div, p, ul, ol, li, dl, dt, dd, h1, h2, h3, h4, h5, h6 label, input, textarea, select, button {
+div, p, ul, ol, li, dl, dt, dd, h1, h2, h3, h4, h5, h6 label, input, textarea, button {
     margin: 0;
     padding: 0;
     color: #555555;
@@ -12,6 +12,17 @@ div, p, ul, ol, li, dl, dt, dd, h1, h2, h3, h4, h5, h6 label, input, textarea, s
     line-height: 1.8;
     box-sizing: border-box;
 }
+
+/*
+select {
+    margin: 0;
+    padding: 0;
+    color: #555555;
+    font-size: 1rem;
+    line-height: 1.8;
+    box-sizing: border-box;
+}
+*/
 
 h1, h2, h3 {
     font-size: 1.2rem;
@@ -174,10 +185,12 @@ header .site-name a {
     margin-bottom: 8px;
 }
 
+/*
 .common-form select {
     padding: 4px;
     margin-bottom: 8px;
 }
+*/
 
 .common-form .submit {
     margin-top: 8px;
